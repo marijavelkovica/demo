@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>All cars</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+    <table>
+        <thead>
+        <tr>
+            <th> Make </th>
+            <th> Model </th>
+            <th> Production year </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:if="${cars.empty}">
+            <td colspan="2"> No Cars found in database </td>
+        </tr>
+        <tr th:each="car : ${cars}">
+            <td><span th:text="${car.make}"> Make </span></td>
+            <td><span th:text="${car.model}"> Model </span></td>
+            <td><span th:text="${car.productionYear}"> Production year </span></td>
+        </tr>
+        </tbody>
+    </table>
+    <p><a href="/cars/newcar">Register another car</a></p>
+</body>
+</html>
