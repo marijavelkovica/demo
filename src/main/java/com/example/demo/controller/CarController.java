@@ -47,7 +47,7 @@ public class CarController {
             result.append(car.toString());
         }
 
-        System.out.println("Marija's izmainas 21:48");
+        System.out.println("jolanta's izmainas 21:48");
 
         return result.toString();
     }
