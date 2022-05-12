@@ -2,15 +2,16 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.Car;
 import com.example.demo.repository.CarRepository;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-@RestController
+@Controller
 @RequestMapping("/cars")
 public class CarController {
 
@@ -20,35 +21,24 @@ public class CarController {
         this.carRepository = carRepository;
     }
 
-    @GetMapping("/create")
-    public String registerCar(String model, String make, Integer productionYear) {
-        Car newCar = new Car(model, make, productionYear);
-        carRepository.save(newCar);
-        return "Successfully added a car!";
+    @GetMapping("/newcar")
+    public String carForm(Model model) {
+        model.addAttribute("car", new Car());
+        return "newcar"; // name of the thymeleaf template
     }
 
-    @GetMapping("/byId")
-    public String lookupCar(Long id) {
-        Optional<Car> carOptional = carRepository.findById(id);
-
-        if (carOptional.isPresent()) {
-            Car car = carOptional.get();
-            return "Found " + car;
-        } else {
-            return "Car with ID " + id + " not found in DB";
-        }
+    @PostMapping("/newcar")
+    public String carSubmit(@ModelAttribute Car car, Model model) {
+        carRepository.save(car);
+        model.addAttribute("car", car);
+        return "result"; // name of the thymeleaf template
     }
 
     @GetMapping
-    public String lookupAllCars() {
-        List<Car> cars = carRepository.findAll();
-
-        StringBuilder result = new StringBuilder();
-        for (Car car : cars) {
-            result.append(car.toString());
-        }
-
-        return result.toString();
+    public String listAllCars(Model model) {
+        List<Car> allCars = carRepository.findAll();
+        model.addAttribute("cars", allCars);
+        return "allCars"; // name of the thymeleaf template
     }
 
     @GetMapping("/findCarsNewerThan")
