@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,7 +48,19 @@ public class CarController {
             result.append(car.toString());
         }
 
-        System.out.println("Andreja un Jolantes jaunas izmainas 21:48");
+        return result.toString();
+    }
+
+    @GetMapping("/findCarsNewerThan")
+    public String fetchCarsNewerThan(Integer year) {
+        List<Car> allCars = carRepository.findByProductionYearGreaterThan(year);
+
+        StringBuilder result = new StringBuilder();
+        for (Car car : allCars) {
+            if (car.getProductionYear() > year) {
+                result.append(car.toString());
+            }
+        }
 
         return result.toString();
     }
